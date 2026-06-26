@@ -71,6 +71,32 @@ Properties:
 - follows parser-style extraction logic and returns direct media URLs
 - only platforms that fit the `single downloadable direct URL -> aria2` model are included here
 
+## Design references and differences
+
+This project borrows ideas from several existing tools, but it is not a drop-in mirror of any of them.
+
+### Referenced projects
+
+- `yt-dlp`
+- `vacacia/astrbot_plugin_link_resolver`
+- `Zhalslar/astrbot_plugin_parser`
+
+### What was borrowed
+
+- From `yt-dlp`: the idea of using a mature extractor as one optional parse path when a platform is better handled by extractor tooling.
+- From `astrbot_plugin_link_resolver`: the idea of resolving share links for a small set of domestic platforms without requiring per-user frontend configuration.
+- From `astrbot_plugin_parser`: the idea of parser-style platform adapters that independently extract downloadable media URLs.
+
+### What is different here
+
+- This repository is centered on `aria2` JSON-RPC forwarding, not chatbot message parsing.
+- The final target here is always: `share link -> resolve direct URL -> push to aria2`.
+- `plugin_link_resolver` and `plugin_parser` are treated as two separate parse strategies. They are not mixed into one path.
+- Only platforms that can be turned into a practical direct-download flow for `aria2` are kept in the current implementation.
+- Browser CORS / preflight / private-network support is built into this proxy because the intended caller is a browser frontend across a `Tailscale` network.
+
+So the relationship is: this project references those resolver ideas, but reworks them into a dedicated `aria2`-oriented proxy flow.
+
 ## Browser frontend support
 
 The proxy already handles browser preflight and private-network access:

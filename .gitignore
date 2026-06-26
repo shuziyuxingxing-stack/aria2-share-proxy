@@ -1,0 +1,12 @@
+﻿# Python cache
+__pycache__/
+*.py[cod]
+
+# Local runtime files
+proxy.log
+proxy_config.json
+test-downloads/
+
+# Local environments
+.venv/
+venv/
